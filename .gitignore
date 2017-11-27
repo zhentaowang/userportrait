@@ -8,7 +8,7 @@ api/
 *.iml
 *.vscode/
 webapp/
-#src/main/resources/generatorConfig.xml
+src/main/resources/generatorConfig.xml
 #src/main/resources/logback-test.xml
 *swagger.json
 
