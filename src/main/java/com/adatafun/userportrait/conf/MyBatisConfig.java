@@ -1,10 +1,13 @@
-package com.adatafun.recommendation.conf;
+package com.adatafun.userportrait.conf;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.mysql.jdbc.Driver;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
@@ -55,7 +58,7 @@ public class MyBatisConfig {
     @Bean
     public MapperScannerConfigurer mapperScannerConfigurer(){
         MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
-        mapperScannerConfigurer.setBasePackage("com.adatafun.recommendation.mapper");
+        mapperScannerConfigurer.setBasePackage("com.adatafun.userportrait.mapper");
         mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
         return mapperScannerConfigurer;
     }
@@ -66,7 +69,7 @@ public class MyBatisConfig {
         sqlSessionFactoryBean.setDataSource(dataSource);
         sqlSessionFactoryBean.setMapperLocations(resourcePatternResolver.getResources("classpath:conf/mybatis/mapper/*.xml"));
         sqlSessionFactoryBean.setConfigLocation(resourceLoader.getResource("classpath:mybatis.xml"));
-        sqlSessionFactoryBean.setTypeAliasesPackage("com.adatafun.recommendation.model");
+        sqlSessionFactoryBean.setTypeAliasesPackage("com.adatafun.userportrait.model");
         return sqlSessionFactoryBean;
     }
 

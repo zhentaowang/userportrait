@@ -15,10 +15,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * DimGeneration.java
- * Copyright(C) 2016 杭州量子金融信息服务有限公司
- * https://www.zhiweicloud.com
- * 2017-11-27 17:07:22 Created By wzt
-*/
+ * Copyright(C) 2017 杭州风数科技有限公司
+ * Created by wzt on 2017/11/27.
+ */
 @ApiModel(value="DimGeneration",description="dim_generation")
 public class DimGeneration {
     @ApiModelProperty(value="",name="id", required=true)
