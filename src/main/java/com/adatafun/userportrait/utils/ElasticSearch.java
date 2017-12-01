@@ -2,17 +2,29 @@ package com.adatafun.userportrait.utils;
 
 import com.adatafun.userportrait.conf.ESFactory;
 import com.adatafun.userportrait.model.User;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
 import io.searchbox.core.SearchResult;
+import io.searchbox.core.search.aggregation.MetricAggregation;
+import io.searchbox.core.search.aggregation.Range;
 import org.apache.lucene.queryparser.classic.QueryParser;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.junit.After;
 import org.junit.Before;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -296,6 +308,132 @@ public class ElasticSearch {
     public boolean deleteIndex(Map<String, Object> param) throws Exception {
 
         return jestService.delete(jestClient, param.get("indexName").toString());
+    }
+
+    public List<Map> getUserPortrait(Map<String, Object> param, JSONObject bool_json, JSONObject rangeAgg) throws Exception {
+
+
+        JSONObject query_json = new JSONObject();
+        query_json.put("query", bool_json);
+
+//        query_json.put("aggregations", createTermsAgg());
+        query_json.put("aggregations", rangeAgg);
+
+        String query0 = query_json.toJSONString();
+        SearchResult result = jestService.search(jestClient, param.get("indexName").toString(), param.get("typeName").toString(), query0);
+        JsonElement jsonElement = result.getJsonObject().get("aggregations").getAsJsonObject();
+        JsonObject jsonObject = jsonElement.getAsJsonObject();
+        JsonElement jsonElement0 = jsonObject.get(param.get("aggName").toString());
+        JsonObject jsonObject0 = jsonElement0.getAsJsonObject();
+        JsonElement jsonElement1 = jsonObject0.get("buckets");
+        String vdfd = jsonElement1.toString();
+        List<Map> list = JSON.parseArray(vdfd, Map.class);
+        List<SearchResult.Hit<User, Void>> hits = result.getHits(User.class);
+        List<User> userList = new ArrayList<>();
+        for (SearchResult.Hit<User, Void> hit : hits) {
+            userList.add(hit.source);
+        }
+        return list;
+
+    }
+
+    public List<Map> getUserPortraitTest(Map<String, Object> param, List<Long> ages) throws Exception {
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        QueryBuilder queryBuilder = QueryBuilders.boolQuery()
+                .must(QueryBuilders.termsQuery("cityLevel.keyword", "一线城市", "二线城市"))
+                .must(QueryBuilders.rangeQuery("age").gte(1960).lte(1970))
+                .must(QueryBuilders.termsQuery("nameValidation", "1"))
+                .must(QueryBuilders.boolQuery()
+                        .should(QueryBuilders.rangeQuery("business").gte("0"))
+                        .should(QueryBuilders.rangeQuery("crowd").gte("0"))
+                        .should(QueryBuilders.rangeQuery("student").gte("0"))
+                        .should(QueryBuilders.rangeQuery("eleven").gte("0"))
+                        .should(QueryBuilders.rangeQuery("home").gte("0")));
+        searchSourceBuilder.query(queryBuilder);
+
+        TermsAggregationBuilder termsAggregationBuilder = AggregationBuilders.terms("gradeAgg").field("city.keyword").size(34);
+        searchSourceBuilder.aggregation(termsAggregationBuilder);
+        searchSourceBuilder.size(10);
+        searchSourceBuilder.from(0);
+        String query = searchSourceBuilder.toString();
+
+        int[] ageArray = new int[1];
+        ageArray[0] = 1962;
+        String[] cityLevelArray = new String[2];
+        cityLevelArray[0] = "一线城市";
+        cityLevelArray[1] = "二线城市";
+
+        JSONObject query_json = new JSONObject();
+        JSONObject bool_json = new JSONObject();
+        JSONObject must_json = new JSONObject();
+        JSONArray must_json_array = new JSONArray();
+
+        JSONObject terms = new JSONObject();
+        JSONObject terms_json = new JSONObject();
+        terms_json.put("cityLevel.keyword", cityLevelArray);
+        terms.put("terms", terms_json);
+
+        JSONObject range0 = new JSONObject();
+        JSONObject range0_json = new JSONObject();
+        JSONObject range00_json = new JSONObject();
+        range00_json.put("from", 1960);
+        range00_json.put("to", 1970);
+        range0_json.put("age", range00_json);
+        range0.put("range", range0_json);
+
+        JSONObject range = new JSONObject();
+        JSONObject age = new JSONObject();
+        JSONObject age_json = new JSONObject();
+        Map<String, Object> age_map = new HashMap<>();
+        age_map.put("from", 1960);
+        age_map.put("to", 1980);
+        age_map.put("include_lower", true);
+        age_map.put("include_upper", false);
+        age_map.put("boost", 1.0);
+        age_json.putAll(age_map);
+        age.put("age", age_json);
+        range.put("range", age);
+
+        must_json_array.add(terms);
+        must_json.put("must", must_json_array);
+        bool_json.put("bool", must_json);
+        query_json.put("query", bool_json);
+
+        JSONObject term = new JSONObject();
+        JSONObject term_json = new JSONObject();
+        JSONObject agg_json = new JSONObject();
+        term_json.put("field", "city.keyword");
+        term_json.put("size", 34);
+        term.put("terms", term_json);
+        agg_json.put("gradeAgg", term);
+
+        JSONObject ranges = new JSONObject();
+        JSONObject range_json = new JSONObject();
+        JSONObject agg0_json = new JSONObject();
+        term_json.put("field", "tdc_accumulationUsage");
+        term_json.put("size", 34);
+        term.put("terms", term_json);
+        agg_json.put("gradeAgg", term);
+
+        query_json.put("aggregations", agg0_json);
+
+        String query0 = query_json.toJSONString();
+        SearchResult result = jestService.search(jestClient, param.get("indexName").toString(), param.get("typeName").toString(), query0);
+        JsonElement jsonElement = result.getJsonObject().get("aggregations").getAsJsonObject();
+        JsonObject jsonObject = jsonElement.getAsJsonObject();
+        JsonElement jsonElement0 = jsonObject.get("gradeAgg");
+        JsonObject jsonObject0 = jsonElement0.getAsJsonObject();
+        JsonElement jsonElement1 = jsonObject0.get("buckets");
+        String vdfd = jsonElement1.toString();
+        List<Map> list = JSON.parseArray(vdfd, Map.class);
+        List<SearchResult.Hit<User, Void>> hits = result.getHits(User.class);
+        List<User> userList = new ArrayList<>();
+        for (SearchResult.Hit<User, Void> hit : hits) {
+            userList.add(hit.source);
+        }
+        return list;
+
     }
 
 }

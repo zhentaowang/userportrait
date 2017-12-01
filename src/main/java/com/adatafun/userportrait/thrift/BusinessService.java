@@ -24,6 +24,7 @@
 
 package com.adatafun.userportrait.thrift;
 
+import com.adatafun.userportrait.controller.UserPortraitController;
 import com.adatafun.userportrait.service.UserPortraitService;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -39,11 +40,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class BusinessService implements IBusinessService {
 
-    private final UserPortraitService userPortraitService;
+    private final UserPortraitController userPortraitController;
 
     @Autowired
-    public BusinessService(UserPortraitService userPortraitService) {
-        this.userPortraitService = userPortraitService;
+    public BusinessService(UserPortraitController userPortraitController) {
+        this.userPortraitController = userPortraitController;
     }
 
     @Override
@@ -51,8 +52,8 @@ public class BusinessService implements IBusinessService {
         String success = null;
 
         switch (operation) {
-            case "messageStreamingComputing":
-                success = userPortraitService.getUserPortraitResult(request);
+            case "getUserPortraitResult":
+                success = userPortraitController.getUserPortraitResult(request);
                 break;
             default:
                 break;

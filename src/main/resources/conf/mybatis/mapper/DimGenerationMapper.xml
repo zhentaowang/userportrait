@@ -4,15 +4,12 @@
   <resultMap id="BaseResultMap" type="com.adatafun.userportrait.model.DimGeneration">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="age" jdbcType="DATE" property="age" />
+    <result column="age" jdbcType="BIGINT" property="age" />
   </resultMap>
   <sql id="Base_Column_List">
     id, name, age
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from dim_generation
-    where id = #{id,jdbcType=INTEGER}
+  <select id="getGenerationList" parameterType="map" resultType="long">
+    select age from dim_generation where id in (${ids}) order by age asc
   </select>
 </mapper>

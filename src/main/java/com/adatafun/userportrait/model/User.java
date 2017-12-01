@@ -12,7 +12,7 @@ public class User {
     @JestId
     private String  userId;
     private Long  nameValidation;
-    private String  sex;
+    private Long  sex;
     private Long  age;
     private String  city;
     private String  cityLevel;
@@ -81,7 +81,7 @@ public class User {
         super();
         // TODO Auto-generated constructor stub
     }
-    public User(String userId, Long nameValidation, String sex, Long age, String city,
+    public User(String userId, Long nameValidation, Long sex, Long age, String city,
                 String cityLevel, String cityRegion, String institutionType, String protocolType,
                 String  productType, Long  jianhangting, Long  jht_accumulationUsage,
                 String jht_recencyUsage, String jht_notRecencyUsage, Long jht_serviceCount,
@@ -173,6 +173,32 @@ public class User {
         this.zyt_serviceCount = zyt_serviceCount;
     }
 
+    public String getTermsLabelName() {
+        String termsRegex = getSexName() + "|" + getNameValidationName()  + "|" + getCityName()  + "|" + getCityLevelName()
+                + "|" + getCityRegionName()  + "|" + getInstitutionTypeName()  + "|" + getProtocolTypeName()  + "|" + getProductTypeName()
+                + "|" + getJht_recencyUsageName()  + "|" + getJht_notRecencyUsageName()  + "|" + getLtt_recencyUsageName()
+                + "|" + getLtt_notRecencyUsageName()  + "|" + getTdc_recencyUsageName()  + "|" + getTdc_notRecencyUsageName()
+                + "|" + getHjq_recencyUsageName()  + "|" + getHjq_notRecencyUsageName()  + "|" + getHyq_recencyUsagName()
+                + "|" + getHyq_notRecencyUsageName()  + "|" + getByt_recencyUsageName()  + "|" + getByt_notRecencyUsageName()
+                + "|" + getLht_recencyUsageName()  + "|" + getLht_notRecencyUsageName()  + "|" + getZht_recencyUsageName()
+                + "|" + getZht_notRecencyUsageName()  + "|" + getNht_recencyUsageName()  + "|" + getNht_notRecencyUsageName()
+                + "|" + getGht_recencyUsageName()  + "|" + getGht_notRecencyUsageName()  + "|" + getZyt_recencyUsageName()
+                + "|" + getZyt_notRecencyUsageName();
+        return termsRegex;
+    }
+
+    public String getRangesLabelName() {
+        String rangesRegex = getAgeName() + "|" + getJht_accumulationUsagName() + "|" + getJht_serviceCountName()
+                + "|" + getLtt_accumulationUsagName() + "|" + getLtt_serviceCountName() + "|" + getTdc_accumulationUsageName()
+                + "|" + getTdc_serviceCountName() + "|" + getHjq_serviceCountName() + "|" + getHjq_accumulationUsageName()
+                + "|" + getHyq_accumulationUsageName() + "|" + getHyq_serviceCountName() + "|" + getByt_accumulationUsageName()
+                + "|" + getByt_serviceCountName() + "|" + getLht_accumulationUsageName() + "|" + getLht_serviceCountName()
+                + "|" + getZht_accumulationUsageName() + "|" + getZht_serviceCountName() + "|" + getNht_accumulationUsageName()
+                + "|" + getNht_serviceCountName() + "|" + getGht_accumulationUsageName() + "|" + getGht_serviceCountName()
+                + "|" + getZyt_accumulationUsageName() + "|" + getZyt_serviceCountName();
+        return rangesRegex;
+    }
+
     @Override
     public String toString() {
         return "User [userId=" + userId + ", nameValidation=" + nameValidation + ", sex=" + sex +
@@ -218,12 +244,20 @@ public class User {
         this.nameValidation = nameValidation;
     }
 
-    public String getSex() {
+    public String getNameValidationName() {
+        return "nameValidation";
+    }
+
+    public Long getSex() {
         return sex;
     }
 
-    public void setSex(String sex) {
+    public void setSex(Long sex) {
         this.sex = sex;
+    }
+
+    public String getSexName() {
+        return "sex";
     }
 
     public Long getAge() {
@@ -234,12 +268,20 @@ public class User {
         this.age = age;
     }
 
+    public String getAgeName() {
+        return "age";
+    }
+
     public String getCity() {
         return city;
     }
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getCityName() {
+        return "city";
     }
 
     public String getCityLevel() {
@@ -250,12 +292,20 @@ public class User {
         this.cityLevel = cityLevel;
     }
 
+    public String getCityLevelName() {
+        return "cityLevel";
+    }
+
     public String getCityRegion() {
         return cityRegion;
     }
 
     public void setCityRegion(String cityRegion) {
         this.cityRegion = cityRegion;
+    }
+
+    public String getCityRegionName() {
+        return "cityRegion";
     }
 
     public String getInstitutionType() {
@@ -266,12 +316,20 @@ public class User {
         this.institutionType = institutionType;
     }
 
+    public String getInstitutionTypeName() {
+        return "institutionType";
+    }
+
     public String getProtocolType() {
         return protocolType;
     }
 
     public void setProtocolType(String protocolType) {
         this.protocolType = protocolType;
+    }
+
+    public String getProtocolTypeName() {
+        return "protocolType";
     }
 
     public String getProductType() {
@@ -282,12 +340,20 @@ public class User {
         this.productType = productType;
     }
 
+    public String getProductTypeName() {
+        return "productType";
+    }
+
     public Long getJianhangting() {
         return jianhangting;
     }
 
     public void setJianhangting(Long jianhangting) {
         this.jianhangting = jianhangting;
+    }
+
+    public String getJianhangtingName() {
+        return "jianhangting";
     }
 
     public Long getJht_accumulationUsage() {
@@ -298,12 +364,20 @@ public class User {
         this.jht_accumulationUsage = jht_accumulationUsage;
     }
 
+    public String getJht_accumulationUsagName() {
+        return "jht_accumulationUsage";
+    }
+
     public String getJht_recencyUsage() {
         return jht_recencyUsage;
     }
 
     public void setJht_recencyUsage(String jht_recencyUsage) {
         this.jht_recencyUsage = jht_recencyUsage;
+    }
+
+    public String getJht_recencyUsageName() {
+        return "jht_recencyUsage";
     }
 
     public String getJht_notRecencyUsage() {
@@ -314,12 +388,20 @@ public class User {
         this.jht_notRecencyUsage = jht_notRecencyUsage;
     }
 
+    public String getJht_notRecencyUsageName() {
+        return "jht_notRecencyUsage";
+    }
+
     public Long getJht_serviceCount() {
         return jht_serviceCount;
     }
 
     public void setJht_serviceCount(Long jht_serviceCount) {
         this.jht_serviceCount = jht_serviceCount;
+    }
+
+    public String getJht_serviceCountName() {
+        return "jht_serviceCount";
     }
 
     public Long getLongtengting() {
@@ -330,12 +412,20 @@ public class User {
         this.longtengting = longtengting;
     }
 
+    public String getLongtengtingName() {
+        return "longtengting";
+    }
+
     public Long getLtt_accumulationUsage() {
         return ltt_accumulationUsage;
     }
 
     public void setLtt_accumulationUsage(Long ltt_accumulationUsage) {
         this.ltt_accumulationUsage = ltt_accumulationUsage;
+    }
+
+    public String getLtt_accumulationUsagName() {
+        return "ltt_accumulationUsage";
     }
 
     public String getLtt_recencyUsage() {
@@ -346,12 +436,20 @@ public class User {
         this.ltt_recencyUsage = ltt_recencyUsage;
     }
 
+    public String getLtt_recencyUsageName() {
+        return "ltt_recencyUsage";
+    }
+
     public String getLtt_notRecencyUsage() {
         return ltt_notRecencyUsage;
     }
 
     public void setLtt_notRecencyUsage(String ltt_notRecencyUsage) {
         this.ltt_notRecencyUsage = ltt_notRecencyUsage;
+    }
+
+    public String getLtt_notRecencyUsageName() {
+        return "ltt_notRecencyUsage";
     }
 
     public Long getLtt_serviceCount() {
@@ -362,12 +460,20 @@ public class User {
         this.ltt_serviceCount = ltt_serviceCount;
     }
 
+    public String getLtt_serviceCountName() {
+        return "ltt_serviceCount";
+    }
+
     public Long getToudengcang() {
         return toudengcang;
     }
 
     public void setToudengcang(Long toudengcang) {
         this.toudengcang = toudengcang;
+    }
+
+    public String getToudengcangName() {
+        return "toudengcang";
     }
 
     public Long getTdc_accumulationUsage() {
@@ -378,12 +484,20 @@ public class User {
         this.tdc_accumulationUsage = tdc_accumulationUsage;
     }
 
+    public String getTdc_accumulationUsageName() {
+        return "tdc_accumulationUsage";
+    }
+
     public String getTdc_recencyUsage() {
         return tdc_recencyUsage;
     }
 
     public void setTdc_recencyUsage(String tdc_recencyUsage) {
         this.tdc_recencyUsage = tdc_recencyUsage;
+    }
+
+    public String getTdc_recencyUsageName() {
+        return "tdc_recencyUsage";
     }
 
     public String getTdc_notRecencyUsage() {
@@ -394,12 +508,20 @@ public class User {
         this.tdc_notRecencyUsage = tdc_notRecencyUsage;
     }
 
+    public String getTdc_notRecencyUsageName() {
+        return "tdc_notRecencyUsage";
+    }
+
     public Long getTdc_serviceCount() {
         return tdc_serviceCount;
     }
 
     public void setTdc_serviceCount(Long tdc_serviceCount) {
         this.tdc_serviceCount = tdc_serviceCount;
+    }
+
+    public String getTdc_serviceCountName() {
+        return "tdc_serviceCount";
     }
 
     public Long getHoujianqu() {
@@ -410,12 +532,20 @@ public class User {
         this.houjianqu = houjianqu;
     }
 
+    public String getHoujianquName() {
+        return "houjianqu";
+    }
+
     public Long getHjq_accumulationUsage() {
         return hjq_accumulationUsage;
     }
 
     public void setHjq_accumulationUsage(Long hjq_accumulationUsage) {
         this.hjq_accumulationUsage = hjq_accumulationUsage;
+    }
+
+    public String getHjq_accumulationUsageName() {
+        return "hjq_accumulationUsage";
     }
 
     public String getHjq_recencyUsage() {
@@ -426,12 +556,20 @@ public class User {
         this.hjq_recencyUsage = hjq_recencyUsage;
     }
 
+    public String getHjq_recencyUsageName() {
+        return "hjq_recencyUsage";
+    }
+
     public String getHjq_notRecencyUsage() {
         return hjq_notRecencyUsage;
     }
 
     public void setHjq_notRecencyUsage(String hjq_notRecencyUsage) {
         this.hjq_notRecencyUsage = hjq_notRecencyUsage;
+    }
+
+    public String getHjq_notRecencyUsageName() {
+        return "hjq_notRecencyUsage";
     }
 
     public Long getHjq_serviceCount() {
@@ -442,12 +580,20 @@ public class User {
         this.hjq_serviceCount = hjq_serviceCount;
     }
 
+    public String getHjq_serviceCountName() {
+        return "hjq_serviceCount";
+    }
+
     public Long getHuiyuanqu() {
         return huiyuanqu;
     }
 
     public void setHuiyuanqu(Long huiyuanqu) {
         this.huiyuanqu = huiyuanqu;
+    }
+
+    public String getHuiyuanquName() {
+        return "huiyuanqu";
     }
 
     public Long getHyq_accumulationUsage() {
@@ -458,12 +604,20 @@ public class User {
         this.hyq_accumulationUsage = hyq_accumulationUsage;
     }
 
+    public String getHyq_accumulationUsageName() {
+        return "hyq_accumulationUsage";
+    }
+
     public String getHyq_recencyUsage() {
         return hyq_recencyUsage;
     }
 
     public void setHyq_recencyUsage(String hyq_recencyUsage) {
         this.hyq_recencyUsage = hyq_recencyUsage;
+    }
+
+    public String getHyq_recencyUsagName() {
+        return "hyq_recencyUsage";
     }
 
     public String getHyq_notRecencyUsage() {
@@ -474,12 +628,21 @@ public class User {
         this.hyq_notRecencyUsage = hyq_notRecencyUsage;
     }
 
+    public String getHyq_notRecencyUsageName() {
+        return "hyq_notRecencyUsage";
+    }
+
+
     public Long getHyq_serviceCount() {
         return hyq_serviceCount;
     }
 
     public void setHyq_serviceCount(Long hyq_serviceCount) {
         this.hyq_serviceCount = hyq_serviceCount;
+    }
+
+    public String getHyq_serviceCountName() {
+        return "hyq_serviceCount";
     }
 
     public Long getBieyuanting() {
@@ -490,12 +653,20 @@ public class User {
         this.bieyuanting = bieyuanting;
     }
 
+    public String getBieyuantingName() {
+        return "bieyuanting";
+    }
+
     public Long getByt_accumulationUsage() {
         return byt_accumulationUsage;
     }
 
     public void setByt_accumulationUsage(Long byt_accumulationUsage) {
         this.byt_accumulationUsage = byt_accumulationUsage;
+    }
+
+    public String getByt_accumulationUsageName() {
+        return "byt_accumulationUsage";
     }
 
     public String getByt_recencyUsage() {
@@ -506,12 +677,20 @@ public class User {
         this.byt_recencyUsage = byt_recencyUsage;
     }
 
+    public String getByt_recencyUsageName() {
+        return "byt_recencyUsage";
+    }
+
     public String getByt_notRecencyUsage() {
         return byt_notRecencyUsage;
     }
 
     public void setByt_notRecencyUsage(String byt_notRecencyUsage) {
         this.byt_notRecencyUsage = byt_notRecencyUsage;
+    }
+
+    public String getByt_notRecencyUsageName() {
+        return "byt_notRecencyUsage";
     }
 
     public Long getByt_serviceCount() {
@@ -522,12 +701,20 @@ public class User {
         this.byt_serviceCount = byt_serviceCount;
     }
 
+    public String getByt_serviceCountName() {
+        return "byt_serviceCount";
+    }
+
     public Long getLiuhaoting() {
         return liuhaoting;
     }
 
     public void setLiuhaoting(Long liuhaoting) {
         this.liuhaoting = liuhaoting;
+    }
+
+    public String getLiuhaotingName() {
+        return "liuhaoting";
     }
 
     public Long getLht_accumulationUsage() {
@@ -538,12 +725,20 @@ public class User {
         this.lht_accumulationUsage = lht_accumulationUsage;
     }
 
+    public String getLht_accumulationUsageName() {
+        return "lht_accumulationUsage";
+    }
+
     public String getLht_recencyUsage() {
         return lht_recencyUsage;
     }
 
     public void setLht_recencyUsage(String lht_recencyUsage) {
         this.lht_recencyUsage = lht_recencyUsage;
+    }
+
+    public String getLht_recencyUsageName() {
+        return "lht_recencyUsage";
     }
 
     public String getLht_notRecencyUsage() {
@@ -554,12 +749,20 @@ public class User {
         this.lht_notRecencyUsage = lht_notRecencyUsage;
     }
 
+    public String getLht_notRecencyUsageName() {
+        return "lht_notRecencyUsage";
+    }
+
     public Long getLht_serviceCount() {
         return lht_serviceCount;
     }
 
     public void setLht_serviceCount(Long lht_serviceCount) {
         this.lht_serviceCount = lht_serviceCount;
+    }
+
+    public String getLht_serviceCountName() {
+        return "lht_serviceCount";
     }
 
     public Long getZhaohangting() {
@@ -570,12 +773,20 @@ public class User {
         this.zhaohangting = zhaohangting;
     }
 
+    public String getZhaohangtingName() {
+        return "zhaohangting";
+    }
+
     public Long getZht_accumulationUsage() {
         return zht_accumulationUsage;
     }
 
     public void setZht_accumulationUsage(Long zht_accumulationUsage) {
         this.zht_accumulationUsage = zht_accumulationUsage;
+    }
+
+    public String getZht_accumulationUsageName() {
+        return "zht_accumulationUsage";
     }
 
     public String getZht_recencyUsage() {
@@ -586,12 +797,20 @@ public class User {
         this.zht_recencyUsage = zht_recencyUsage;
     }
 
+    public String getZht_recencyUsageName() {
+        return "zht_recencyUsage";
+    }
+
     public String getZht_notRecencyUsage() {
         return zht_notRecencyUsage;
     }
 
     public void setZht_notRecencyUsage(String zht_notRecencyUsage) {
         this.zht_notRecencyUsage = zht_notRecencyUsage;
+    }
+
+    public String getZht_notRecencyUsageName() {
+        return "zht_notRecencyUsage";
     }
 
     public Long getZht_serviceCount() {
@@ -602,12 +821,20 @@ public class User {
         this.zht_serviceCount = zht_serviceCount;
     }
 
+    public String getZht_serviceCountName() {
+        return "zht_serviceCount";
+    }
+
     public Long getNonghangting() {
         return nonghangting;
     }
 
     public void setNonghangting(Long nonghangting) {
         this.nonghangting = nonghangting;
+    }
+
+    public String getNonghangtingName() {
+        return "nonghangting";
     }
 
     public Long getNht_accumulationUsage() {
@@ -618,12 +845,20 @@ public class User {
         this.nht_accumulationUsage = nht_accumulationUsage;
     }
 
+    public String getNht_accumulationUsageName() {
+        return "nht_accumulationUsage";
+    }
+
     public String getNht_recencyUsage() {
         return nht_recencyUsage;
     }
 
     public void setNht_recencyUsage(String nht_recencyUsage) {
         this.nht_recencyUsage = nht_recencyUsage;
+    }
+
+    public String getNht_recencyUsageName() {
+        return "nht_recencyUsage";
     }
 
     public String getNht_notRecencyUsage() {
@@ -634,12 +869,20 @@ public class User {
         this.nht_notRecencyUsage = nht_notRecencyUsage;
     }
 
+    public String getNht_notRecencyUsageName() {
+        return "nht_notRecencyUsage";
+    }
+
     public Long getNht_serviceCount() {
         return nht_serviceCount;
     }
 
     public void setNht_serviceCount(Long nht_serviceCount) {
         this.nht_serviceCount = nht_serviceCount;
+    }
+
+    public String getNht_serviceCountName() {
+        return "nht_serviceCount";
     }
 
     public Long getGonghangting() {
@@ -650,12 +893,20 @@ public class User {
         this.gonghangting = gonghangting;
     }
 
+    public String getGonghangtingName() {
+        return "gonghangting";
+    }
+
     public Long getGht_accumulationUsage() {
         return ght_accumulationUsage;
     }
 
     public void setGht_accumulationUsage(Long ght_accumulationUsage) {
         this.ght_accumulationUsage = ght_accumulationUsage;
+    }
+
+    public String getGht_accumulationUsageName() {
+        return "ght_accumulationUsage";
     }
 
     public String getGht_recencyUsage() {
@@ -666,12 +917,20 @@ public class User {
         this.ght_recencyUsage = ght_recencyUsage;
     }
 
+    public String getGht_recencyUsageName() {
+        return "ght_recencyUsage";
+    }
+
     public String getGht_notRecencyUsage() {
         return ght_notRecencyUsage;
     }
 
     public void setGht_notRecencyUsage(String ght_notRecencyUsage) {
         this.ght_notRecencyUsage = ght_notRecencyUsage;
+    }
+
+    public String getGht_notRecencyUsageName() {
+        return "ght_notRecencyUsage";
     }
 
     public Long getGht_serviceCount() {
@@ -682,12 +941,20 @@ public class User {
         this.ght_serviceCount = ght_serviceCount;
     }
 
+    public String getGht_serviceCountName() {
+        return "ght_serviceCount";
+    }
+
     public Long getZhengyaoting() {
         return zhengyaoting;
     }
 
     public void setZhengyaoting(Long zhengyaoting) {
         this.zhengyaoting = zhengyaoting;
+    }
+
+    public String getZhengyaotingName() {
+        return "zhengyaoting";
     }
 
     public Long getZyt_accumulationUsage() {
@@ -698,12 +965,20 @@ public class User {
         this.zyt_accumulationUsage = zyt_accumulationUsage;
     }
 
+    public String getZyt_accumulationUsageName() {
+        return "zyt_accumulationUsage";
+    }
+
     public String getZyt_recencyUsage() {
         return zyt_recencyUsage;
     }
 
     public void setZyt_recencyUsage(String zyt_recencyUsage) {
         this.zyt_recencyUsage = zyt_recencyUsage;
+    }
+
+    public String getZyt_recencyUsageName() {
+        return "zyt_recencyUsage";
     }
 
     public String getZyt_notRecencyUsage() {
@@ -714,11 +989,19 @@ public class User {
         this.zyt_notRecencyUsage = zyt_notRecencyUsage;
     }
 
+    public String getZyt_notRecencyUsageName() {
+        return "zyt_notRecencyUsage";
+    }
+
     public Long getZyt_serviceCount() {
         return zyt_serviceCount;
     }
 
     public void setZyt_serviceCount(Long zyt_serviceCount) {
         this.zyt_serviceCount = zyt_serviceCount;
+    }
+
+    public String getZyt_serviceCountName() {
+        return "zyt_serviceCount";
     }
 }

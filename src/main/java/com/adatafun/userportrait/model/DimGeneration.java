@@ -8,7 +8,6 @@ package com.adatafun.userportrait.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.Date;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -30,7 +29,7 @@ public class DimGeneration {
     private String name;
 
     @ApiModelProperty(value="",name="age")
-    private Date age;
+    private Long age;
 
     /**
      * 
@@ -68,7 +67,7 @@ public class DimGeneration {
      * 
      * @return age 
      */
-    public Date getAge() {
+    public Long getAge() {
         return age;
     }
 
@@ -76,7 +75,7 @@ public class DimGeneration {
      * 
      * @param age 
      */
-    public void setAge(Date age) {
+    public void setAge(Long age) {
         this.age = age;
     }
 }
