@@ -112,6 +112,13 @@ public class UserPortraitService {
                 should_json_array.add(range_tdc);
             }
 
+            if (o.equals("10次以上")) {
+                range0_tdc_json.put("from", 9.5);
+                range_tdc_json.put(labelName, range0_tdc_json);
+                range_tdc.put("range", range_tdc_json);
+                should_json_array.add(range_tdc);
+            }
+
             if (o.equals("10-19次")) {
                 range0_tdc_json.put("from", 9.5);
                 range0_tdc_json.put("to", 19.5);
@@ -177,17 +184,25 @@ public class UserPortraitService {
         range7.put("from", 5.5);
         range7.put("to", 9.5);
         rangeList.add(range7);
-        range8.put("key", "10-19次");
-        range8.put("from", 9.5);
-        range8.put("to", 19.5);
-        rangeList.add(range8);
-        range9.put("key", "20-29次");
-        range9.put("from", 19.5);
-        range9.put("to", 29.5);
-        rangeList.add(range9);
-        range10.put("key", "30次及以上");
-        range10.put("from", 29.5);
-        rangeList.add(range10);
+
+        if (labelName.contains("serviceCount")) {
+            range8.put("key", "10次以上");
+            range8.put("from", 9.5);
+            rangeList.add(range8);
+        } else {
+            range8.put("key", "10-19次");
+            range8.put("from", 9.5);
+            range8.put("to", 19.5);
+            rangeList.add(range8);
+            range9.put("key", "20-29次");
+            range9.put("from", 19.5);
+            range9.put("to", 29.5);
+            rangeList.add(range9);
+            range10.put("key", "30次及以上");
+            range10.put("from", 29.5);
+            rangeList.add(range10);
+        }
+
 
         JSONObject ranges = new JSONObject();
         JSONObject range_json = new JSONObject();

@@ -326,13 +326,7 @@ public class ElasticSearch {
         JsonElement jsonElement0 = jsonObject.get(param.get("aggName").toString());
         JsonObject jsonObject0 = jsonElement0.getAsJsonObject();
         JsonElement jsonElement1 = jsonObject0.get("buckets");
-        String vdfd = jsonElement1.toString();
-        List<Map> list = JSON.parseArray(vdfd, Map.class);
-        List<SearchResult.Hit<User, Void>> hits = result.getHits(User.class);
-        List<User> userList = new ArrayList<>();
-        for (SearchResult.Hit<User, Void> hit : hits) {
-            userList.add(hit.source);
-        }
+        List<Map> list = JSON.parseArray(jsonElement1.toString(), Map.class);
         return list;
 
     }
