@@ -155,6 +155,36 @@ public class UserPortraitService {
 
     }
 
+    public JSONObject createRangesAge(String labelName, JSONArray labelValue) throws Exception {
+        JSONObject bool = new JSONObject();
+        JSONObject should_json = new JSONObject();
+        JSONArray should_json_array = new JSONArray();
+        List<String> nameList = Arrays.asList("未知用户", "50前", "50后", "60后", "70后", "80后", "90后", "00后");
+        List<String> ageList = Arrays.asList(  "-10",     "0", "1950", "1960", "1970", "1980", "1990", "2000");
+        for (Object o : labelValue) {
+            JSONObject range_age = new JSONObject();
+            JSONObject range_age_json = new JSONObject();
+            JSONObject range0_age_json = new JSONObject();
+
+            int index = nameList.indexOf(o);
+            if (index == nameList.size()-1) {
+                range_age.put("from", ageList.get(index));
+                range_age.put("include_lower", true);
+            } else {
+                range_age.put("from", ageList.get(index));
+                range_age.put("to", ageList.get(index+1));
+                range_age.put("include_lower", true);
+                range_age.put("include_upper", false);
+            }
+            range_age_json.put(labelName, range_age);
+            range0_age_json.put("range", range_age_json);
+            should_json_array.add(range0_age_json);
+        }
+        should_json.put("should", should_json_array);
+        bool.put("bool", should_json);
+        return bool;
+    }
+
     public JSONObject createTermsAgg(String labelName, String aggName) throws Exception {
 
         JSONObject term = new JSONObject();
@@ -219,6 +249,33 @@ public class UserPortraitService {
         agg0_json.put(aggName, ranges);
         return agg0_json;
 
+    }
+
+    public JSONObject createRangeAgeAgg(String labelName, String aggName) throws Exception {
+        List<String> nameList = Arrays.asList("未知用户", "50前", "50后", "60后", "70后", "80后", "90后", "00后");
+        List<String> ageList = Arrays.asList(  "-10",     "0", "1950", "1960", "1970", "1980", "1990", "2000");
+
+        JSONArray rangeArray = new JSONArray();
+        for (int i = 0; i < nameList.size()-1; i++) {
+            JSONObject range = new JSONObject();
+            range.put("key", nameList.get(i));
+            range.put("from", ageList.get(i));
+            range.put("to", ageList.get(i+1));
+            rangeArray.add(range);
+        }
+
+        JSONObject range0 = new JSONObject();
+        range0.put("key", nameList.get(nameList.size()-1));
+        range0.put("from", ageList.get(nameList.size()-1));
+        rangeArray.add(range0);
+
+        JSONObject ranges = new JSONObject();
+        JSONObject range_json = new JSONObject();
+        range_json.put("field", labelName);
+        range_json.put("ranges", rangeArray);
+        ranges.put("range", range_json);
+
+        return ranges;
     }
 
 }
