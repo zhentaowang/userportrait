@@ -75,6 +75,8 @@ public class User {
     private String  zyt_recencyUsage;
     private String  zyt_notRecencyUsage;
     private Long  zyt_serviceCount;
+    private String  province;
+    private Long  accumulationUsageTotal;
 
 
     public User() {
@@ -104,7 +106,8 @@ public class User {
                 Long  gonghangting, Long  ght_accumulationUsage,
                 String ght_recencyUsage, String ght_notRecencyUsage, Long ght_serviceCount,
                 Long  zhengyaoting, Long  zyt_accumulationUsage,
-                String zyt_recencyUsage, String zyt_notRecencyUsage, Long zyt_serviceCount) {
+                String zyt_recencyUsage, String zyt_notRecencyUsage, Long zyt_serviceCount,
+                String province, Long accumulationUsageTotal) {
         super();
         this.userId = userId;
         this.nameValidation = nameValidation;
@@ -171,6 +174,8 @@ public class User {
         this.zyt_recencyUsage = zyt_recencyUsage;
         this.zyt_notRecencyUsage = zyt_notRecencyUsage;
         this.zyt_serviceCount = zyt_serviceCount;
+        this.province = province;
+        this.accumulationUsageTotal = accumulationUsageTotal;
     }
 
     public String getTermsLabelName() {
@@ -183,7 +188,7 @@ public class User {
                 + "|" + getLht_recencyUsageName()  + "|" + getLht_notRecencyUsageName()  + "|" + getZht_recencyUsageName()
                 + "|" + getZht_notRecencyUsageName()  + "|" + getNht_recencyUsageName()  + "|" + getNht_notRecencyUsageName()
                 + "|" + getGht_recencyUsageName()  + "|" + getGht_notRecencyUsageName()  + "|" + getZyt_recencyUsageName()
-                + "|" + getZyt_notRecencyUsageName();
+                + "|" + getZyt_notRecencyUsageName() + "|" + getProvinceName();
         return termsRegex;
     }
 
@@ -195,7 +200,7 @@ public class User {
                 + "|" + getByt_serviceCountName() + "|" + getLht_accumulationUsageName() + "|" + getLht_serviceCountName()
                 + "|" + getZht_accumulationUsageName() + "|" + getZht_serviceCountName() + "|" + getNht_accumulationUsageName()
                 + "|" + getNht_serviceCountName() + "|" + getGht_accumulationUsageName() + "|" + getGht_serviceCountName()
-                + "|" + getZyt_accumulationUsageName() + "|" + getZyt_serviceCountName();
+                + "|" + getZyt_accumulationUsageName() + "|" + getZyt_serviceCountName() + "|" + getAccumulationUsageTotalName();
         return rangesRegex;
     }
 
@@ -225,7 +230,8 @@ public class User {
                 ", gonghangting=" + gonghangting + "ght_accumulationUsage" + ght_accumulationUsage +
                 ", ght_recencyUsage=" + ght_recencyUsage + ", ght_notRecencyUsage=" + ght_notRecencyUsage + ", ght_serviceCount=" + ght_serviceCount +
                 ", zhengyaoting=" + zhengyaoting + "zyt_accumulationUsage" + zyt_accumulationUsage +
-                ", zyt_recencyUsage=" + zyt_recencyUsage + ", zyt_notRecencyUsage=" + zyt_notRecencyUsage + ", zyt_serviceCount=" + zyt_serviceCount +"]";
+                ", zyt_recencyUsage=" + zyt_recencyUsage + ", zyt_notRecencyUsage=" + zyt_notRecencyUsage + ", zyt_serviceCount=" + zyt_serviceCount +
+                ", province=" + province + ", accumulationUsageTotal=" + accumulationUsageTotal +"]";
     }
 
     public String getUserId() {
@@ -1003,5 +1009,29 @@ public class User {
 
     public String getZyt_serviceCountName() {
         return "zyt_serviceCount";
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getProvinceName() {
+        return "province";
+    }
+
+    public Long getAccumulationUsageTotal() {
+        return accumulationUsageTotal;
+    }
+
+    public void setAccumulationUsageTotal(Long accumulationUsageTotal) {
+        this.accumulationUsageTotal = accumulationUsageTotal;
+    }
+
+    public String getAccumulationUsageTotalName() {
+        return "accumulationUsageTotal";
     }
 }

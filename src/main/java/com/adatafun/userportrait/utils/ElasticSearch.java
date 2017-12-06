@@ -327,6 +327,9 @@ public class ElasticSearch {
         JsonObject jsonObject0 = jsonElement0.getAsJsonObject();
         JsonElement jsonElement1 = jsonObject0.get("buckets");
         List<Map> list = JSON.parseArray(jsonElement1.toString(), Map.class);
+        Map<String, Integer> total = new HashMap<>();
+        total.put("total", result.getHits(User.class).size());
+        list.add(total);
         return list;
 
     }

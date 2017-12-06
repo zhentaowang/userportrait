@@ -21,11 +21,17 @@ public class UserPortraitService {
     public List<Map> getUserPortraitResult(Map<String, Object> param, JSONObject jsonObject) throws Exception {
 
         JSONObject bool_json = createQuery(jsonObject);
-//        JSONObject termsAgg = createTermsAgg("cityLevel", "cityLevel" + "TermsAgg");
-        JSONObject rangeAgg = createRangeAgg(param.get("labelName").toString(), param.get("aggName").toString());
+
+        User user = new User();
+        JSONObject jsonObjectAgg;
+        if (param.get("labelName").toString().matches(user.getTermsLabelName())) {
+            jsonObjectAgg = createTermsAgg(param.get("labelName").toString(), param.get("aggName").toString());
+        } else {
+            jsonObjectAgg = createRangeAgg(param.get("labelName").toString(), param.get("aggName").toString());
+        }
 
         elasticSearch.setUp();
-        List<Map> result = elasticSearch.getUserPortrait(param, bool_json, rangeAgg);
+        List<Map> result = elasticSearch.getUserPortrait(param, bool_json, jsonObjectAgg);
         elasticSearch.tearDown();
         return result;
 
