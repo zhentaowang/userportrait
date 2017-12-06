@@ -55,13 +55,17 @@ public class UserPortraitController {
                 user.put("userPortrait", userPortraitResult);
             }
 
-
             param.put("labelName", "accumulationUsageTotal");
             param.put("aggName", "accumulationUsageTotalRangeAgg");
             List<Map> accumulationUsageTotal = userPortraitService.getUserPortraitResult(param, jsonObject);
             Object total = accumulationUsageTotal.get(accumulationUsageTotal.size() - 1).get("total");
             user.put("total", total);
             List<Map> accumulationUsageTotalResult = transferDataForm(accumulationUsageTotal);
+
+            param.put("labelName", "institutionType");
+            param.put("aggName", "institutionTypeTermsAgg");
+            List<Map> institutionType = userPortraitService.getUserPortraitResult(param, jsonObject);
+            List<Map> institutionTypeResult = transferDataForm(institutionType);
 
             param.put("labelName", "province");
             param.put("aggName", "provinceTermsAgg");
@@ -73,9 +77,16 @@ public class UserPortraitController {
             List<Map> sex = userPortraitService.getUserPortraitResult(param, jsonObject);
             List<Map> sexResult = transferDataForm(sex);
 
+            param.put("labelName", "age");
+            param.put("aggName", "ageRangeAgg");
+            List<Map> age = userPortraitService.getUserPortraitResult(param, jsonObject);
+            List<Map> ageResult = transferDataForm(age);
+
             user.put("accumulationUsageTotal", accumulationUsageTotalResult);
+            user.put("institutionType", institutionTypeResult);
             user.put("province", provinceResult);
             user.put("sex", sexResult);
+            user.put("age", ageResult);
             result.put("user", user);
             result.put("status", LZStatus.SUCCESS.value());
             result.put("msg", LZStatus.SUCCESS.display());
@@ -90,7 +101,7 @@ public class UserPortraitController {
 
     public List<Map> transferDataForm (List<Map> result) {
         List<Map> newResult = new ArrayList<>();
-        for (int i = 0; i < result.size(); i++) {
+        for (int i = 0; i < result.size() - 1; i++) {
             Map<String, Object> mapResult = new HashMap<>();
             mapResult.put("name", result.get(i).get("key"));
             mapResult.put("id", i);

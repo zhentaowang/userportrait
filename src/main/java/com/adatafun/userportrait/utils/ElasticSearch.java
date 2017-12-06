@@ -271,21 +271,6 @@ public class ElasticSearch {
 
     }
 
-    public Double count(Map<String, Object> param) throws Exception {
-
-        String[] name = new String[]{ "T:o\"m-", "Jerry" };
-        String from = "2016-09-01T00:00:00";
-        String to = "2016-10-01T00:00:00";
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        QueryBuilder queryBuilder = QueryBuilders.boolQuery()
-                .must(QueryBuilders.termsQuery("name", name))
-                .must(QueryBuilders.rangeQuery("birth").gte(from).lte(to));
-        searchSourceBuilder.query(queryBuilder);
-        String query = searchSourceBuilder.toString();
-        return jestService.count(jestClient, param.get("indexName").toString(), param.get("typeName").toString(), query);
-
-    }
-
     public User get(Map<String, Object> param) throws Exception {
 
         User user = new User();
@@ -310,26 +295,42 @@ public class ElasticSearch {
         return jestService.delete(jestClient, param.get("indexName").toString());
     }
 
-    public List<Map> getUserPortrait(Map<String, Object> param, JSONObject bool_json, JSONObject rangeAgg) throws Exception {
+    public Double count(Map<String, Object> param) throws Exception {
+
+        String[] name = new String[]{ "T:o\"m-", "Jerry" };
+        String from = "2016-09-01T00:00:00";
+        String to = "2016-10-01T00:00:00";
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        QueryBuilder queryBuilder = QueryBuilders.boolQuery()
+                .must(QueryBuilders.termsQuery("name", name))
+                .must(QueryBuilders.rangeQuery("birth").gte(from).lte(to));
+        searchSourceBuilder.query(queryBuilder);
+        String query = searchSourceBuilder.toString();
+        return jestService.count(jestClient, param.get("indexName").toString(), param.get("typeName").toString(), query);
+
+    }
+
+    public List<Map> getUserPortrait(Map<String, Object> param, JSONObject bool_json, JSONObject agg) throws Exception {
 
 
         JSONObject query_json = new JSONObject();
         query_json.put("query", bool_json);
 
-//        query_json.put("aggregations", createTermsAgg());
-        query_json.put("aggregations", rangeAgg);
+        Double total = jestService.count(jestClient, param.get("indexName").toString(), param.get("typeName").toString(), query_json.toJSONString());
 
-        String query0 = query_json.toJSONString();
-        SearchResult result = jestService.search(jestClient, param.get("indexName").toString(), param.get("typeName").toString(), query0);
+        query_json.put("aggregations", agg);
+
+        String query = query_json.toJSONString();
+        SearchResult result = jestService.search(jestClient, param.get("indexName").toString(), param.get("typeName").toString(), query);
         JsonElement jsonElement = result.getJsonObject().get("aggregations").getAsJsonObject();
         JsonObject jsonObject = jsonElement.getAsJsonObject();
         JsonElement jsonElement0 = jsonObject.get(param.get("aggName").toString());
         JsonObject jsonObject0 = jsonElement0.getAsJsonObject();
         JsonElement jsonElement1 = jsonObject0.get("buckets");
         List<Map> list = JSON.parseArray(jsonElement1.toString(), Map.class);
-        Map<String, Integer> total = new HashMap<>();
-        total.put("total", result.getHits(User.class).size());
-        list.add(total);
+        Map<String, Double> totalMap = new HashMap<>();
+        totalMap.put("total", total);
+        list.add(totalMap);
         return list;
 
     }

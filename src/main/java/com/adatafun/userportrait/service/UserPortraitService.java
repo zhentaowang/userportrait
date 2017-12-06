@@ -24,7 +24,9 @@ public class UserPortraitService {
 
         User user = new User();
         JSONObject jsonObjectAgg;
-        if (param.get("labelName").toString().matches(user.getTermsLabelName())) {
+        if (param.get("labelName").toString().equals("age")) {
+            jsonObjectAgg = createRangeAgeAgg(param.get("labelName").toString(), param.get("aggName").toString());
+        } else if (param.get("labelName").toString().matches(user.getTermsLabelName())) {
             jsonObjectAgg = createTermsAgg(param.get("labelName").toString(), param.get("aggName").toString());
         } else {
             jsonObjectAgg = createRangeAgg(param.get("labelName").toString(), param.get("aggName").toString());
@@ -70,7 +72,12 @@ public class UserPortraitService {
         }
 
         for (int j = 0; j < rangesLabelList.size(); j++) {
-            JSONObject bool = createRanges(rangesLabelList.get(j), rangesList.get(j));
+            JSONObject bool;
+            if (rangesLabelList.get(j).equals("age")) {
+                bool = createRangesAge(rangesLabelList.get(j), rangesList.get(j));
+            } else {
+                bool = createRanges(rangesLabelList.get(j), rangesList.get(j));
+            }
             must_json_array.add(bool);
         }
 
@@ -271,11 +278,13 @@ public class UserPortraitService {
 
         JSONObject ranges = new JSONObject();
         JSONObject range_json = new JSONObject();
+        JSONObject agg0_json = new JSONObject();
         range_json.put("field", labelName);
         range_json.put("ranges", rangeArray);
         ranges.put("range", range_json);
+        agg0_json.put(aggName, ranges);
 
-        return ranges;
+        return agg0_json;
     }
 
 }
