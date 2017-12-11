@@ -23,10 +23,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.junit.After;
 import org.junit.Before;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * ElasticSearch.java
@@ -310,30 +307,45 @@ public class ElasticSearch {
 
     }
 
-    public List<Map> getUserPortrait(Map<String, Object> param, JSONObject bool_json, JSONObject agg) throws Exception {
+    public List<Map> transferDataForm (List<Map> result) {
+        List<Map> newResult = new ArrayList<>();
+        for (int i = 0; i < result.size(); i++) {
+            Map<String, Object> mapResult = new HashMap<>();
+            mapResult.put("name", result.get(i).get("key"));
+            mapResult.put("id", i);
+            mapResult.put("value", result.get(i).get("doc_count"));
+            newResult.add(mapResult);
+        }
+        return newResult;
+    }
 
-
+    public JSONObject getUserPortrait(Map<String, Object> param, JSONObject bool_json, JSONObject agg) throws Exception {
         JSONObject query_json = new JSONObject();
         query_json.put("query", bool_json);
-
-        Double total = jestService.count(jestClient, param.get("indexName").toString(), param.get("typeName").toString(), query_json.toJSONString());
-
         query_json.put("aggregations", agg);
-
         String query = query_json.toJSONString();
         SearchResult result = jestService.search(jestClient, param.get("indexName").toString(), param.get("typeName").toString(), query);
         JsonElement jsonElement = result.getJsonObject().get("aggregations").getAsJsonObject();
         JsonObject jsonObject = jsonElement.getAsJsonObject();
-        JsonElement jsonElement0 = jsonObject.get(param.get("aggName").toString());
-        JsonObject jsonObject0 = jsonElement0.getAsJsonObject();
-        JsonElement jsonElement1 = jsonObject0.get("buckets");
-        List<Map> list = JSON.parseArray(jsonElement1.toString(), Map.class);
-        Map<String, Double> totalMap = new HashMap<>();
-        totalMap.put("total", total);
-        list.add(totalMap);
-        return list;
 
+        JSONObject user = new JSONObject();
+        JSONObject User = new JSONObject();
+        List<String> aggsList = Arrays.asList("institutionType","sex","cityRegion","accumulationUsageTotal","province","age","userPortrait");
+        for (String aggs : aggsList) {
+            JsonElement jsonElement0 = jsonObject.get(aggs+"RangeAgg");
+            if (jsonElement0 == null) {
+                continue;
+            }
+            String ret = jsonElement0.getAsJsonObject().get("buckets").toString();
+            List<Map> list = JSON.parseArray(ret, Map.class);
+            List<Map> sexResult = transferDataForm(list);
+            user.put(aggs, sexResult);
+        }
+        user.put("total", result.getTotal());
+        User.put("user", user);
+        return User;
     }
+
 
     public List<Map> getUserPortraitTest(Map<String, Object> param, List<Long> ages) throws Exception {
 

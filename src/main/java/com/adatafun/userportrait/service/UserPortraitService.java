@@ -2,8 +2,12 @@ package com.adatafun.userportrait.service;
 
 import com.adatafun.userportrait.model.User;
 import com.adatafun.userportrait.utils.ElasticSearch;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.zhiweicloud.guest.APIUtil.LXResult;
+import com.zhiweicloud.guest.APIUtil.LZResult;
+import com.zhiweicloud.guest.APIUtil.LZStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -18,25 +22,34 @@ public class UserPortraitService {
 
     private static ElasticSearch elasticSearch = new ElasticSearch();
 
-    public List<Map> getUserPortraitResult(Map<String, Object> param, JSONObject jsonObject) throws Exception {
-
+    public String getUserPortraitResult(Map<String, Object> param, JSONObject jsonObject) throws Exception {
         JSONObject bool_json = createQuery(jsonObject);
 
         User user = new User();
         JSONObject jsonObjectAgg;
-        if (param.get("labelName").toString().equals("age")) {
-            jsonObjectAgg = createRangeAgeAgg(param.get("labelName").toString(), param.get("aggName").toString());
-        } else if (param.get("labelName").toString().matches(user.getTermsLabelName())) {
-            jsonObjectAgg = createTermsAgg(param.get("labelName").toString(), param.get("aggName").toString());
-        } else {
-            jsonObjectAgg = createRangeAgg(param.get("labelName").toString(), param.get("aggName").toString());
+        JSONObject nameJson = new JSONObject();
+        String portraitType = (String) param.get("userPortrait");
+        List<String> aggsList = Arrays.asList("institutionType","sex","cityRegion","accumulationUsageTotal","province","age",portraitType);
+        for (int i = 0; i < aggsList.size(); i++) {
+            if (aggsList.get(i) == null) {
+                continue;
+            }
+            if (aggsList.get(i).equals("age")) {
+                jsonObjectAgg = createRangeAgeAgg(aggsList.get(i));
+            } else if (aggsList.get(i).matches(user.getTermsLabelName())) {
+                jsonObjectAgg = createTermsAgg(aggsList.get(i));
+            } else {
+                jsonObjectAgg = createRangeAgg(aggsList.get(i));
+            }
+            if (i == aggsList.size()-1) {
+                aggsList.set(i, "userPortrait");
+            }
+            nameJson.put(aggsList.get(i)+"RangeAgg", jsonObjectAgg);
         }
-
         elasticSearch.setUp();
-        List<Map> result = elasticSearch.getUserPortrait(param, bool_json, jsonObjectAgg);
+        LZResult<JSONObject> result = new LZResult<>(elasticSearch.getUserPortrait(param, bool_json, nameJson));
         elasticSearch.tearDown();
-        return result;
-
+        return JSON.toJSONString(result);
     }
 
     public JSONObject createQuery(JSONObject jsonObject) throws Exception {
@@ -192,23 +205,21 @@ public class UserPortraitService {
         return bool;
     }
 
-    public JSONObject createTermsAgg(String labelName, String aggName) throws Exception {
+    public JSONObject createTermsAgg(String labelName) throws Exception {
 
         JSONObject term = new JSONObject();
         JSONObject term_json = new JSONObject();
-        JSONObject agg_json = new JSONObject();
         if (!labelName.equals("nameValidation") && !labelName.equals("sex")) {
             labelName = labelName + ".keyword";
         }
         term_json.put("field", labelName);
         term_json.put("size", 34);
         term.put("terms", term_json);
-        agg_json.put(aggName, term);
-        return agg_json;
+        return term;
 
     }
 
-    public JSONObject createRangeAgg(String labelName, String aggName) throws Exception {
+    public JSONObject createRangeAgg(String labelName) throws Exception {
 
         String[] keyArray = {"未知","0次","1次","2次","3次","4次","5次"};
         List<JSONObject> rangeList = new ArrayList<>();
@@ -249,16 +260,14 @@ public class UserPortraitService {
 
         JSONObject ranges = new JSONObject();
         JSONObject range_json = new JSONObject();
-        JSONObject agg0_json = new JSONObject();
         range_json.put("field", labelName);
         range_json.put("ranges", rangeList);
         ranges.put("range", range_json);
-        agg0_json.put(aggName, ranges);
-        return agg0_json;
+        return ranges;
 
     }
 
-    public JSONObject createRangeAgeAgg(String labelName, String aggName) throws Exception {
+    public JSONObject createRangeAgeAgg(String labelName) throws Exception {
         List<String> nameList = Arrays.asList("未知用户", "50前", "50后", "60后", "70后", "80后", "90后", "00后");
         List<String> ageList = Arrays.asList(  "-10",     "0", "1950", "1960", "1970", "1980", "1990", "2000");
 
@@ -278,13 +287,10 @@ public class UserPortraitService {
 
         JSONObject ranges = new JSONObject();
         JSONObject range_json = new JSONObject();
-        JSONObject agg0_json = new JSONObject();
         range_json.put("field", labelName);
         range_json.put("ranges", rangeArray);
         ranges.put("range", range_json);
-        agg0_json.put(aggName, ranges);
-
-        return agg0_json;
+        return ranges;
     }
 
 }
