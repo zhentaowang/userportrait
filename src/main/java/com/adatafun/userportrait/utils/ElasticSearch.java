@@ -329,8 +329,8 @@ public class ElasticSearch {
         JsonObject jsonObject = jsonElement.getAsJsonObject();
 
         JSONObject user = new JSONObject();
-        JSONObject User = new JSONObject();
-        List<String> aggsList = Arrays.asList("institutionType","sex","cityRegion","accumulationUsageTotal","province","age","userPortrait");
+        JSONObject retJson = new JSONObject();
+        List<String> aggsList = (List<String>) param.get("aggsList");
         for (String aggs : aggsList) {
             JsonElement jsonElement0 = jsonObject.get(aggs+"RangeAgg");
             if (jsonElement0 == null) {
@@ -342,8 +342,8 @@ public class ElasticSearch {
             user.put(aggs, sexResult);
         }
         user.put("total", result.getTotal());
-        User.put("user", user);
-        return User;
+        retJson.put("user", user);
+        return retJson;
     }
 
 

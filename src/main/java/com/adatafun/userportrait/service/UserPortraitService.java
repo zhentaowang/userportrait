@@ -29,20 +29,22 @@ public class UserPortraitService {
         JSONObject jsonObjectAgg;
         JSONObject nameJson = new JSONObject();
         String portraitType = (String) param.get("userPortrait");
-        List<String> aggsList = Arrays.asList("institutionType","sex","cityRegion","accumulationUsageTotal","province","age",portraitType);
+        List<String> aggsList = (List<String>) param.get("aggsList");
         for (int i = 0; i < aggsList.size(); i++) {
-            if (aggsList.get(i) == null) {
-                continue;
-            }
-            if (aggsList.get(i).equals("age")) {
-                jsonObjectAgg = createRangeAgeAgg(aggsList.get(i));
-            } else if (aggsList.get(i).matches(user.getTermsLabelName())) {
-                jsonObjectAgg = createTermsAgg(aggsList.get(i));
-            } else {
-                jsonObjectAgg = createRangeAgg(aggsList.get(i));
-            }
+            String aggs = aggsList.get(i);
             if (i == aggsList.size()-1) {
-                aggsList.set(i, "userPortrait");
+                if (portraitType != null) {
+                    aggs = portraitType;
+                }else {
+                    continue;
+                }
+            }
+            if (aggs.equals("age")) {
+                jsonObjectAgg = createRangeAgeAgg(aggs);
+            } else if (aggs.matches(user.getTermsLabelName())) {
+                jsonObjectAgg = createTermsAgg(aggs);
+            } else {
+                jsonObjectAgg = createRangeAgg(aggs);
             }
             nameJson.put(aggsList.get(i)+"RangeAgg", jsonObjectAgg);
         }

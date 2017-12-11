@@ -10,10 +10,7 @@ import com.zhiweicloud.guest.APIUtil.LZStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * UserPortraitController.java
@@ -44,6 +41,8 @@ public class UserPortraitController {
             param.put("indexName", "lj-user");
             param.put("typeName", "lj-user");
             param.put("userPortrait", portraitType);
+            List<String> aggsList = Arrays.asList("institutionType","sex","cityRegion","accumulationUsageTotal","province","age","userPortrait");
+            param.put("aggsList", aggsList);
             String userPortrait = userPortraitService.getUserPortraitResult(param, jsonObject);
             return userPortrait;
         } catch (Exception e) {
