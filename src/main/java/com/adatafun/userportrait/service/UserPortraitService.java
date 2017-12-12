@@ -28,12 +28,12 @@ public class UserPortraitService {
         User user = new User();
         JSONObject jsonObjectAgg;
         JSONObject nameJson = new JSONObject();
-        String portraitType = (String) param.get("userPortrait");
-        List<String> aggsList = (List<String>) param.get("aggsList");
+        String portraitType = param.get("userPortrait").toString();
+        List<String> aggsList = JSONArray.parseArray(JSONObject.toJSONString(param.get("aggsList")), String.class);
         for (int i = 0; i < aggsList.size(); i++) {
             String aggs = aggsList.get(i);
             if (i == aggsList.size()-1) {
-                if (portraitType != null) {
+                if (!portraitType.equals("")) {
                     aggs = portraitType;
                 }else {
                     continue;
@@ -54,7 +54,7 @@ public class UserPortraitService {
         return JSON.toJSONString(result);
     }
 
-    public JSONObject createQuery(JSONObject jsonObject) throws Exception {
+    private JSONObject createQuery(JSONObject jsonObject) throws Exception {
 
         List<JSONArray> termsList = new ArrayList<>();
         List<JSONArray> rangesList = new ArrayList<>();
@@ -102,7 +102,7 @@ public class UserPortraitService {
 
     }
 
-    public JSONObject createTerms(String labelName, JSONArray labelValue) throws Exception {
+    private JSONObject createTerms(String labelName, JSONArray labelValue) throws Exception {
 
         JSONObject terms = new JSONObject();
         JSONObject terms_json = new JSONObject();
@@ -115,7 +115,7 @@ public class UserPortraitService {
 
     }
 
-    public JSONObject createRanges(String labelName, JSONArray labelValue) throws Exception {
+    private JSONObject createRanges(String labelName, JSONArray labelValue) throws Exception {
 
         JSONObject bool = new JSONObject();
         JSONObject should_json = new JSONObject();
@@ -177,7 +177,7 @@ public class UserPortraitService {
 
     }
 
-    public JSONObject createRangesAge(String labelName, JSONArray labelValue) throws Exception {
+    private JSONObject createRangesAge(String labelName, JSONArray labelValue) throws Exception {
         JSONObject bool = new JSONObject();
         JSONObject should_json = new JSONObject();
         JSONArray should_json_array = new JSONArray();
@@ -188,7 +188,7 @@ public class UserPortraitService {
             JSONObject range_age_json = new JSONObject();
             JSONObject range0_age_json = new JSONObject();
 
-            int index = nameList.indexOf(o);
+            int index = nameList.indexOf(o.toString());
             if (index == nameList.size()-1) {
                 range_age.put("from", ageList.get(index));
                 range_age.put("include_lower", true);
@@ -207,7 +207,7 @@ public class UserPortraitService {
         return bool;
     }
 
-    public JSONObject createTermsAgg(String labelName) throws Exception {
+    private JSONObject createTermsAgg(String labelName) throws Exception {
 
         JSONObject term = new JSONObject();
         JSONObject term_json = new JSONObject();
@@ -221,7 +221,7 @@ public class UserPortraitService {
 
     }
 
-    public JSONObject createRangeAgg(String labelName) throws Exception {
+    private JSONObject createRangeAgg(String labelName) throws Exception {
 
         String[] keyArray = {"未知","0次","1次","2次","3次","4次","5次"};
         List<JSONObject> rangeList = new ArrayList<>();
@@ -269,7 +269,7 @@ public class UserPortraitService {
 
     }
 
-    public JSONObject createRangeAgeAgg(String labelName) throws Exception {
+    private JSONObject createRangeAgeAgg(String labelName) throws Exception {
         List<String> nameList = Arrays.asList("未知用户", "50前", "50后", "60后", "70后", "80后", "90后", "00后");
         List<String> ageList = Arrays.asList(  "-10",     "0", "1950", "1960", "1970", "1980", "1990", "2000");
 

@@ -33,7 +33,7 @@ public class UserPortraitController {
 
         try {
             JSONArray data = JSONArray.parseArray(request.get("data").toString());
-            String portraitType = (String) request.get("portrait_type");
+            String portraitType = request.get("portrait_type").toString();
             JSONObject jsonObject = JSONObject.parseObject(data.get(0).toString());
 //            List<Long> level = dimGenerationService.getGenerationList(age);
 
@@ -41,10 +41,9 @@ public class UserPortraitController {
             param.put("indexName", "lj-user");
             param.put("typeName", "lj-user");
             param.put("userPortrait", portraitType);
-            List<String> aggsList = Arrays.asList("institutionType","sex","cityRegion","accumulationUsageTotal","province","age","userPortrait");
+            List<String> aggsList = Arrays.asList("institutionType", "sex", "cityRegion", "accumulationUsageTotal", "province", "age", "userPortrait");
             param.put("aggsList", aggsList);
-            String userPortrait = userPortraitService.getUserPortraitResult(param, jsonObject);
-            return userPortrait;
+            return userPortraitService.getUserPortraitResult(param, jsonObject);
         } catch (Exception e) {
             e.printStackTrace();
             return JSON.toJSONString(LXResult.build(LZStatus.ERROR.value(), LZStatus.ERROR.display()));

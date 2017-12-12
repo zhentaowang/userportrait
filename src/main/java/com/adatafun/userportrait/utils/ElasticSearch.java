@@ -307,7 +307,7 @@ public class ElasticSearch {
 
     }
 
-    public List<Map> transferDataForm (List<Map> result) {
+    private List<Map> transferDataForm (List<Map> result) {
         List<Map> newResult = new ArrayList<>();
         for (int i = 0; i < result.size(); i++) {
             Map<String, Object> mapResult = new HashMap<>();
@@ -324,13 +324,13 @@ public class ElasticSearch {
         query_json.put("query", bool_json);
         query_json.put("aggregations", agg);
         String query = query_json.toJSONString();
-        SearchResult result = jestService.search(jestClient, param.get("indexName").toString(), param.get("typeName").toString(), query);
-        JsonElement jsonElement = result.getJsonObject().get("aggregations").getAsJsonObject();
+        SearchResult searchResult = jestService.search(jestClient, param.get("indexName").toString(), param.get("typeName").toString(), query);
+        JsonElement jsonElement = searchResult.getJsonObject().get("aggregations").getAsJsonObject();
         JsonObject jsonObject = jsonElement.getAsJsonObject();
 
         JSONObject user = new JSONObject();
-        JSONObject retJson = new JSONObject();
-        List<String> aggsList = (List<String>) param.get("aggsList");
+        JSONObject result = new JSONObject();
+        List<String> aggsList = JSONArray.parseArray(JSONObject.toJSONString(param.get("aggsList")), String.class);
         for (String aggs : aggsList) {
             JsonElement jsonElement0 = jsonObject.get(aggs+"RangeAgg");
             if (jsonElement0 == null) {
@@ -341,9 +341,9 @@ public class ElasticSearch {
             List<Map> sexResult = transferDataForm(list);
             user.put(aggs, sexResult);
         }
-        user.put("total", result.getTotal());
-        retJson.put("user", user);
-        return retJson;
+        user.put("total", searchResult.getTotal());
+        result.put("user", user);
+        return result;
     }
 
 
